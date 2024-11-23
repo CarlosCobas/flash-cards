@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Topic;
+use App\Models\Subject;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreTopicRequest;
 use App\Http\Requests\UpdateTopicRequest;
-use App\Models\Topic;
 
 class TopicController extends Controller
 {
@@ -13,7 +15,8 @@ class TopicController extends Controller
      */
     public function index()
     {
-        //
+        $topics = Topic::where('user_id', Auth::id())->latest()->paginate(15);
+        return view('topics.index', ['topics' => $topics]);
     }
 
     /**
@@ -21,7 +24,8 @@ class TopicController extends Controller
      */
     public function create()
     {
-        //
+        $subjects = Subject::where('user_id', Auth::id())->orderBy('name', 'asc')->get();
+        return view('topics.create', ['subjects' => $subjects]);
     }
 
     /**
@@ -29,7 +33,18 @@ class TopicController extends Controller
      */
     public function store(StoreTopicRequest $request)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'min:3'],
+            'subject' => ['required', 'exists:subjects,id']
+        ]);
+
+        Topic::create([
+            'name' => $request['name'],
+            'subject_id' => $request['subject'],
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect('/topics/');
     }
 
     /**
@@ -37,7 +52,7 @@ class TopicController extends Controller
      */
     public function show(Topic $topic)
     {
-        //
+        return view('topics.show', ['topic' => $topic]);
     }
 
     /**
@@ -45,7 +60,8 @@ class TopicController extends Controller
      */
     public function edit(Topic $topic)
     {
-        //
+        $subjects = Subject::where('user_id', Auth::id())->orderBy('name', 'asc')->get();
+        return view('topics.edit', ['topic' => $topic, 'subjects' => $subjects]);
     }
 
     /**
@@ -53,7 +69,16 @@ class TopicController extends Controller
      */
     public function update(UpdateTopicRequest $request, Topic $topic)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'min:3'],
+            'subject' => ['required', 'exists:subjects,id']
+        ]);
+
+        $topic->name = $request['name'];
+        $topic->subject_id = $request['subject'];
+        $topic->update();
+
+        return redirect('/topics/' . $topic->id);
     }
 
     /**

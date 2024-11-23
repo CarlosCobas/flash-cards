@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Card;
+use App\Models\Topic;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreCardRequest;
 use App\Http\Requests\UpdateCardRequest;
-use App\Models\Card;
 
 class CardController extends Controller
 {
@@ -13,7 +16,8 @@ class CardController extends Controller
      */
     public function index()
     {
-        //
+        $cards = Card::where('user_id', Auth::id())->latest()->paginate(15);
+        return view('cards.index', ['cards' => $cards]);
     }
 
     /**
@@ -21,7 +25,8 @@ class CardController extends Controller
      */
     public function create()
     {
-        //
+        $topics = Topic::where('user_id', Auth::id())->orderBy('name', 'asc')->get();
+        return view('cards.create', ['topics' => $topics]);
     }
 
     /**
@@ -29,7 +34,21 @@ class CardController extends Controller
      */
     public function store(StoreCardRequest $request)
     {
-        //
+
+        $request->validate([
+            'question' => ['required', 'min:3'],
+            'answer' => ['required', 'min:3'],
+            'topic' => ['required', 'exists:topics,id'],
+        ]);
+
+        Card::create([
+            'question' => request('question'),
+            'answer' => request('answer'),
+            'topic_id' => request('topic'),
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect('/cards/');
     }
 
     /**
@@ -37,7 +56,7 @@ class CardController extends Controller
      */
     public function show(Card $card)
     {
-        //
+        return view('cards.show', ['card' => $card]);
     }
 
     /**
@@ -45,7 +64,8 @@ class CardController extends Controller
      */
     public function edit(Card $card)
     {
-        //
+        $topics = Topic::where('user_id', Auth::id())->orderBy('name', 'asc')->get();
+        return view('cards.edit', ['card' => $card, 'topics' => $topics]);
     }
 
     /**
@@ -53,7 +73,18 @@ class CardController extends Controller
      */
     public function update(UpdateCardRequest $request, Card $card)
     {
-        //
+        $request->validate([
+            'question' => ['required', 'min:3'],
+            'answer' => ['required', 'min:3'],
+            'topic' => ['required', 'exists:topics,id'],
+        ]);
+
+        $card->question = $request['question'];
+        $card->answer = $request['answer'];
+        $card->topic_id = $request['topic'];
+        $card->update();
+
+        return redirect('/cards/'.$card->id);
     }
 
     /**

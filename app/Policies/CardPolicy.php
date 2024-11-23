@@ -13,7 +13,7 @@ class CardPolicy
      */
     public function viewAny(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -21,7 +21,7 @@ class CardPolicy
      */
     public function view(User $user, Card $card): bool
     {
-        //
+        return $card->user->is($user);
     }
 
     /**
@@ -29,7 +29,7 @@ class CardPolicy
      */
     public function create(User $user): bool
     {
-        //
+        return true;
     }
 
     /**
@@ -37,7 +37,7 @@ class CardPolicy
      */
     public function update(User $user, Card $card): bool
     {
-        //
+        return $card->user->is($user);
     }
 
     /**
@@ -45,7 +45,7 @@ class CardPolicy
      */
     public function delete(User $user, Card $card): bool
     {
-        //
+        return $card->user->is($user);
     }
 
     /**
@@ -53,7 +53,7 @@ class CardPolicy
      */
     public function restore(User $user, Card $card): bool
     {
-        //
+        return $card->user->is($user);
     }
 
     /**
@@ -61,6 +61,6 @@ class CardPolicy
      */
     public function forceDelete(User $user, Card $card): bool
     {
-        //
+        return $card->user->is($user);
     }
 }

@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Subject;
+use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\StoreSubjectRequest;
 use App\Http\Requests\UpdateSubjectRequest;
-use App\Models\Subject;
+use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
@@ -13,7 +15,8 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        //
+        $subjects = Subject::where('user_id', Auth::id())->latest()->paginate(15);
+        return view('subjects.index', ['subjects' => $subjects]);
     }
 
     /**
@@ -21,15 +24,25 @@ class SubjectController extends Controller
      */
     public function create()
     {
-        //
+        return view('subjects.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSubjectRequest $request)
+    public function store(UpdateSubjectRequest $request)
     {
-        //
+
+        $request->validate([
+            'name' => ['required', 'min:3'],
+        ]);
+
+        Subject::create([
+            'name' => request('name'),
+            'user_id' => Auth::id(),
+        ]);
+
+        return redirect('/subjects/');
     }
 
     /**
@@ -37,7 +50,7 @@ class SubjectController extends Controller
      */
     public function show(Subject $subject)
     {
-        //
+        return view('subjects.show', ['subject' => $subject]);
     }
 
     /**
@@ -45,7 +58,7 @@ class SubjectController extends Controller
      */
     public function edit(Subject $subject)
     {
-        //
+        return view('subjects.edit', ['subject' => $subject]);
     }
 
     /**
@@ -53,7 +66,14 @@ class SubjectController extends Controller
      */
     public function update(UpdateSubjectRequest $request, Subject $subject)
     {
-        //
+        $request->validate([
+            'name' => ['required', 'min:3'],
+        ]);
+
+        $subject->name = $request['name'];
+        $subject->update();
+
+        return redirect('/subjects/'.$subject->id);
     }
 
     /**

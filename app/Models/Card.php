@@ -11,6 +11,13 @@ class Card extends Model
     /** @use HasFactory<\Database\Factories\CardFactory> */
     use HasFactory;
 
+    protected $fillable = [
+        'question',
+        'answer',
+        'topic_id',
+        'user_id',
+    ];
+
     public function user() {
         return $this->belongsTo(User::class);
     }

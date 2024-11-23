@@ -19,10 +19,6 @@ return new class extends Migration
             $table->foreignIdFor(User::class);
             $table->string('question');
             $table->string('answer');
-            $table->integer('interval');
-            $table->float('e_factor');
-            $table->date('last_show_date')->nullable();
-            $table->date('next_show_date');
             $table->foreignIdFor(Topic::class);
             $table->timestamps();
         });
