@@ -15,7 +15,7 @@ class SubjectController extends Controller
      */
     public function index()
     {
-        $subjects = Subject::where('user_id', Auth::id())->latest()->paginate(15);
+        $subjects = Auth::user()->subjects;
         return view('subjects.index', ['subjects' => $subjects]);
     }
 
@@ -37,10 +37,14 @@ class SubjectController extends Controller
             'name' => ['required', 'min:3'],
         ]);
 
-        Subject::create([
+        Auth::user()->subjects()->create([
             'name' => request('name'),
-            'user_id' => Auth::id(),
         ]);
+
+        // Subject::create([
+        //     'name' => request('name'),
+        //     'user_id' => Auth::id(),
+        // ]);
 
         return redirect('/subjects/');
     }

@@ -7,9 +7,7 @@ use App\Http\Controllers\RegisteredUserController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TopicController;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
 
 Route::middleware('guest')->group(function() {
     Route::get('register', [RegisteredUserController::class, 'create']);
@@ -20,6 +18,10 @@ Route::middleware('guest')->group(function() {
 });
 
 Route::middleware('auth')->group(function() {
+
+    Route::get('/', function () {
+        return view('welcome');
+    });
 
     //Subjects
     Route::get('subjects', [SubjectController::class, 'index']);

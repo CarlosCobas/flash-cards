@@ -20,7 +20,7 @@ class TopicFactory extends Factory
     {
         return [
             'name' => fake()->word(),
-            'user_id' => User::factory(),
+            'user_id' => User::find(1),
             'subject_id' => Subject::factory(),
         ];
     }

@@ -16,7 +16,7 @@ class CardController extends Controller
      */
     public function index()
     {
-        $cards = Card::where('user_id', Auth::id())->latest()->paginate(15);
+        $cards = Auth::user()->cards;
         return view('cards.index', ['cards' => $cards]);
     }
 
@@ -25,7 +25,7 @@ class CardController extends Controller
      */
     public function create()
     {
-        $topics = Topic::where('user_id', Auth::id())->orderBy('name', 'asc')->get();
+        $topics = Auth::user()->topics;
         return view('cards.create', ['topics' => $topics]);
     }
 
@@ -41,12 +41,20 @@ class CardController extends Controller
             'topic' => ['required', 'exists:topics,id'],
         ]);
 
-        Card::create([
+        $card = Auth::user()->cards()->create([
             'question' => request('question'),
             'answer' => request('answer'),
             'topic_id' => request('topic'),
-            'user_id' => Auth::id(),
         ]);
+
+        $card->study_progress()->create();
+
+        // Card::create([
+        //     'question' => request('question'),
+        //     'answer' => request('answer'),
+        //     'topic_id' => request('topic'),
+        //     'user_id' => Auth::id(),
+        // ]);
 
         return redirect('/cards/');
     }
@@ -64,7 +72,7 @@ class CardController extends Controller
      */
     public function edit(Card $card)
     {
-        $topics = Topic::where('user_id', Auth::id())->orderBy('name', 'asc')->get();
+        $topics = Auth::user()->topics;
         return view('cards.edit', ['card' => $card, 'topics' => $topics]);
     }
 

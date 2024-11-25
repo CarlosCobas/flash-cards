@@ -23,11 +23,7 @@ class CardFactory extends Factory
         return [
             'question' => fake()->sentence(),
             'answer' => fake()->sentence(),
-            'interval' => 1,
-            'e_factor' => 2.5,
-            'last_show_date' => null,
-            'next_show_date' => Date::now(),
-            'user_id' => User::factory(),
+            'user_id' => User::find(1),
             'topic_id' => Topic::factory(),
         ];
     }

@@ -2,6 +2,8 @@
 
 namespace Database\Seeders;
 
+use App\Models\Card;
+use App\Models\StudyProgress;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -19,5 +21,8 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        // Card::factory(30)->create();
+        StudyProgress::factory(30)->create();
     }
 }

@@ -19,7 +19,7 @@ class SubjectFactory extends Factory
     {
         return [
             'name' => fake()->word(),
-            'user_id' => User::factory(),
+            'user_id' => User::find(1),
         ];
     }
 }

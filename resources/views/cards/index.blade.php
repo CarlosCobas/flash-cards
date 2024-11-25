@@ -1,18 +1,14 @@
 <x-layout>
-    <x-page-heading>All Card</x-page-heading>
+    <section class="container px-4 mx-auto">
+        <x-tables.heading title="Cards" subtitle="{{count($cards)}} cards" description="This are all the cards you have created" create_url="/cards/create" create_title="Create card"/>
+        <x-tables.search-input />
 
-    <x-button href="/cards/create">Create Card</x-butotn>
 
-        <ul class="mt-5">
+        <div class="grid grid-cols-1 gap-6 mt-8 xl:mt-12 xl:gap-8 lg:grid-cols-2">
             @foreach ($cards as $card)
-                <li>
-                    <a href="/cards/{{$card->id}}">
-                        <p>{{$card->question}}</p>
-                        <p>{{$card->user->name}} - {{$card->user->id}}</p>
-                        <p>{{$card->subject->name}} - {{$card->subject->id}}</p>
-                        <p>{{$card->topic->name}} - {{$card->topic->id}}</p>
-                    </a>
-                </li>
+                <x-card-link :card="$card"/>
             @endforeach
-        </ul>
+        </div>
+
+    </section>
 </x-layout>

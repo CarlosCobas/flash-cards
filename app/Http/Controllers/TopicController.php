@@ -15,7 +15,7 @@ class TopicController extends Controller
      */
     public function index()
     {
-        $topics = Topic::where('user_id', Auth::id())->latest()->paginate(15);
+        $topics = Auth::user()->topics;
         return view('topics.index', ['topics' => $topics]);
     }
 
@@ -24,7 +24,7 @@ class TopicController extends Controller
      */
     public function create()
     {
-        $subjects = Subject::where('user_id', Auth::id())->orderBy('name', 'asc')->get();
+        $subjects = Auth::user()->subjects;
         return view('topics.create', ['subjects' => $subjects]);
     }
 
@@ -38,11 +38,16 @@ class TopicController extends Controller
             'subject' => ['required', 'exists:subjects,id']
         ]);
 
-        Topic::create([
+        Auth::user()->topics()->create([
             'name' => $request['name'],
             'subject_id' => $request['subject'],
-            'user_id' => Auth::id(),
         ]);
+
+        // Topic::create([
+        //     'name' => $request['name'],
+        //     'subject_id' => $request['subject'],
+        //     'user_id' => Auth::id(),
+        // ]);
 
         return redirect('/topics/');
     }
@@ -60,7 +65,7 @@ class TopicController extends Controller
      */
     public function edit(Topic $topic)
     {
-        $subjects = Subject::where('user_id', Auth::id())->orderBy('name', 'asc')->get();
+        $subjects = Auth::user()->subjects;
         return view('topics.edit', ['topic' => $topic, 'subjects' => $subjects]);
     }
 

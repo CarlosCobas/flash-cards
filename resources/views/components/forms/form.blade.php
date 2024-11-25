@@ -1,5 +1,5 @@
 <form
-    {{ $attributes->except(['method'])->merge(['class' => 'max-w-2xl mx-auto space-y-6']) }}
+    {{ $attributes->except(['method'])->merge(['class' => 'max-w-2xl mx-auto space-y-4']) }}
     method="{{ $attributes->get('method', 'GET') === 'GET' ? 'GET' : 'POST' }}"
 >
     @if ($attributes->get('method', 'GET') !== 'GET')
