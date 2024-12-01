@@ -4,10 +4,10 @@ use App\Http\Controllers\CardController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\SessionController;
 use App\Http\Controllers\RegisteredUserController;
+use App\Http\Controllers\StudySessionController;
 use App\Http\Controllers\SubjectController;
 use App\Http\Controllers\TopicController;
-
-
+use App\Models\StudySession;
 
 Route::middleware('guest')->group(function() {
     Route::get('register', [RegisteredUserController::class, 'create']);
@@ -47,6 +47,8 @@ Route::middleware('auth')->group(function() {
     Route::get('cards/{card}/edit', [CardController::class, 'edit'])->can('update', 'card');
     Route::patch('cards/{card}', [CardController::class, 'update'])->can('update', 'card');
 
+    //Study Session
+    Route::get('study_session/create', [StudySessionController::class, 'store']);
 
     Route::delete('logout', [SessionController::class, 'destroy']);
 });

@@ -47,7 +47,7 @@ class CardController extends Controller
             'topic_id' => request('topic'),
         ]);
 
-        $card->study_progress()->create();
+        $card->studyProgress()->create();
 
         return redirect('/cards/');
     }

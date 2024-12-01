@@ -58,4 +58,15 @@ class User extends Authenticatable
     public function subjects() {
         return $this->hasMany(Subject::class);
     }
+
+    public function studyProgress() {
+        return $this->hasManyThrough(
+            StudyProgress::class,
+            Card::class
+        );
+    }
+
+    public function studySession() {
+        return $this->hasMany(StudySession::class);
+    }
 }

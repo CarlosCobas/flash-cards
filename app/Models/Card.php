@@ -30,7 +30,7 @@ class Card extends Model
         return $this->hasOneThrough(Subject::class, Topic::class, 'id', 'id', 'topic_id', 'subject_id');
     }
 
-    public function study_progress() {
+    public function studyProgress() {
         return $this->hasOne(StudyProgress::class);
     }
 }

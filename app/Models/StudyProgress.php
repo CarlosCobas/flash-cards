@@ -21,7 +21,7 @@ class StudyProgress extends Model
         parent::__construct($attributes);
         $this->interval = 0;
         $this->e_factor = 2.5;
-        $this->next_date_to_show = Carbon::now()->addDays(1);
+        $this->next_date_to_show = Carbon::today()->addDays(1);
     }
 
     public function card() {

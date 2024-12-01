@@ -4,7 +4,11 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreStudySessionRequest;
 use App\Http\Requests\UpdateStudySessionRequest;
+use App\Models\StudyProgress;
 use App\Models\StudySession;
+use App\Services\StudySessionService;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Auth;
 
 class StudySessionController extends Controller
 {
@@ -29,7 +33,7 @@ class StudySessionController extends Controller
      */
     public function store(StoreStudySessionRequest $request)
     {
-        //
+        StudySessionService::createStudySession(Auth::user());
     }
 
     /**

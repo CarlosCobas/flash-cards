@@ -25,6 +25,6 @@ class DatabaseSeeder extends Seeder
         ]);
 
         // Card::factory(30)->create();
-        StudyProgress::factory(30)->create();
+        StudyProgress::factory(5)->create();
     }
 }
