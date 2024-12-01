@@ -49,13 +49,6 @@ class CardController extends Controller
 
         $card->study_progress()->create();
 
-        // Card::create([
-        //     'question' => request('question'),
-        //     'answer' => request('answer'),
-        //     'topic_id' => request('topic'),
-        //     'user_id' => Auth::id(),
-        // ]);
-
         return redirect('/cards/');
     }
 
